@@ -1,0 +1,77 @@
+.profile-section {
+    background-color: #f8f9fa; /* Background for the profile section */
+    padding: 20px;
+    padding-top: 80px; /* Ensure no overlap with fixed header */
+    padding-bottom: 60px; /* Ensure no overlap with fixed footer */
+}
+
+.profile-section .profile-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-section .profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+.profile-section .profile-image {
+    width: 180px;  /* Width of the circular image */
+    height: 180px; /* Height of the circular image */
+    object-fit: cover; /* Ensures the image covers the entire space */
+    object-position: top; /* Adjust the focus to the top of the image */
+    border-radius: 50%;  /* Keep the image circular */
+    border: 5px solid #e2e2e2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+
+}
+
+
+.profile-section .profile-details {
+    padding: 10px;
+}
+
+.profile-section .profile-details h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.profile-section .profile-details h4 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.profile-section .profile-details p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.profile-section .profile-details strong {
+    font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-section .profile-card {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .profile-section .profile-image {
+        margin-bottom: 15px;
+    }
+
+    .profile-section .profile-details {
+        text-align: center;
+    }
+}

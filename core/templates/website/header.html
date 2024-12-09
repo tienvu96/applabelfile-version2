@@ -1,0 +1,119 @@
+{% load static %}
+
+{% block content %}
+<header class="header p-3 bg-dark text-white">
+    <div class="d-flex flex-wrap align-items-center justify-content-between">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                <use xlink:href="#bootstrap"></use>
+            </svg>
+        </a>
+        <div class="header-logo">
+            <img src="{% static 'images/logobidv.png' %}" alt="Logo" style="height: 30px; width: auto;">
+        </div>
+
+        <ul class="nav justify-content-center mb-2 mb-md-0">
+            <li class="nav-item">
+                <a href="{% url 'website:index' %}" class="nav-link px-2">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'website:introduce' %}" class="nav-link px-2">Introduce</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'website:rule' %}" class="nav-link px-2">Rules</a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<style>
+/* Header Styles */
+.header {
+    background-color: #010101; /* Dark background (bootstrap dark) */
+    height: 1.5cm; /* Fixed height for the header */
+    display: flex;
+    align-items: center;
+    padding: 0 1.5cm; /* Padding left and right 1.5 cm */
+    justify-content: space-between;
+    /* position: fixed; */
+}
+
+.header-logo img {
+    height: 30px; /* Height for the logo */
+    margin-left: 1.5cm; /* Left margin for image */
+}
+
+.nav {
+    margin: 0 auto; /* Center the navigation links */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item {
+    margin-left: 15px; /* Add some spacing between links */
+    margin-right: 15px;
+}
+
+.nav-link {
+    color: white; /* Default color for links (white) */
+    text-decoration: none; /* Remove underline */
+    padding: 0.5cm 1cm; /* Padding around the links */
+    font-size: 1rem;
+    transition: color 0.3s ease, text-decoration 0.3s ease; /* Smooth transition when changing colors and underline */
+}
+
+.nav-link:hover {
+    color: #e88c0a; /* Change to yellow on hover */
+}
+
+.nav-link.active, .nav-link:focus, .nav-link:active {
+    color: #f0ad4e;
+    text-decoration: underline; /* Add underline when active or clicked */
+}
+
+.nav-link:not(.active) {
+    color: white; /* Default color when not active */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Stack the header elements */
+        height: auto; /* Auto height for smaller screens */
+        padding: 10px 1.5cm;
+    }
+
+    .nav {
+        flex-direction: column; /* Stack navigation links */
+    }
+
+    .header-logo img {
+        margin-left: 0; /* Remove extra margin for mobile */
+    }
+
+    .nav-item {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
+</style>
+
+<script>
+    // Chọn tất cả các liên kết điều hướng
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    // Thêm sự kiện click cho từng liên kết
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // Loại bỏ lớp 'active' từ tất cả các liên kết
+            navLinks.forEach(l => l.classList.remove('active'));
+            
+            // Thêm lớp 'active' cho liên kết hiện tại được nhấn
+            this.classList.add('active');
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base1.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<body>
+    <div class="profile-section container py-5">
+        <div class="row justify-content-center">
+            <!-- Add the DLP Project Member heading -->
+            <div class="col-md-10 text-center mb-4">
+                <h2 class="project-heading">Giới thiệu thành viên dự án DLP</h2>
+            </div>
+            <!-- Profile Card 1 -->
+            <div class="col-md-10 profile-card">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="{% static 'chitinh.jpg' %}" class="profile-image" alt="Profile Picture">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="profile-details">
+                            <h2>Bà Nguyễn Thị Tình</h2>
+                            <h4>Phó Trưởng Phòng</h4>
+                            <p><strong>TTQTDL:</strong> Nhóm QTDL</p>
+                            <p>
+                                <strong>Thành viên tổ nghiệp vụ trpng dự án DLP.</strong>
+                            </p>
+                            <p>Bà Nguyễn Thị Tình là một trong 5 thành viên của dự án phòng chống thất thoát dữ liệu (DLP)
+                                của Trung tâm Quản trị Dữ Liệu và là cán bộ phụ trách mảng nghiệp vụ liên quan đến các
+                                báo cáo chủ trương, báo cáo kinh tế kỹ thuật và hồ sơ mời thầu. Ngoài ra, là cán bộ đầu
+                                mối ban hành quy định phân loại và gán nhãn dữ liệu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Card 2 -->
+            <div class="col-md-10 profile-card">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="{% static 'chichi.jpg' %}" class="profile-image" alt="Profile Picture">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="profile-details">
+                            <h2>Bà Hoàng Bảo Chi</h2>
+                            <h4>Chuyên viên Quản trị Dữ liệu</h4>
+                            <p><strong>TTQTDL:</strong> Nhóm QTDL</p>
+                            <p>
+                                <strong>Thành viên tổ nghiệp vụ trong dự án DLP.</strong>
+                            </p>
+                            <p>Bà Hoàng Bảo Chi là một trong 5 thành viên của dự án phòng chống thất thoát dữ liệu (DLP)
+                                của Trung tâm Quản trị Dữ Liệu và là cán bộ phụ trách mảng nghiệp vụ liên quan đến các
+                                báo cáo chủ trương, báo cáo kinh tế kỹ thuật và hồ sơ mời thầu. Ngoài ra, là cán bộ đầu
+                                mối ban hành quy định phân loại và gán nhãn dữ liệu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Card 3 -->
+            <div class="col-md-10 profile-card">
+                <div class="row align-items-center">
+                    <div class="col-md-4 text-center">
+                        <img src="{% static 'tienva.jpg' %}" class="profile-image" alt="Profile Picture">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="profile-details">
+                            <h2>Ông Vũ Anh Tiến</h2>
+                            <h4>Chuyên viên Kiến trúc Dữ liệu</h4>
+                            <p><strong>TTQTDL:</strong> Nhóm KTDL</p>
+                            <p>
+                                <strong>Thành viên tổ kỹ thuật trong dự án DLP.</strong>
+                            </p>
+                            <p>Ông Vũ Anh Tiến là một trong 5 thành viên của dự án phòng chống thất thoát dữ liệu (DLP)
+                                của Trung tâm Quản trị Dữ Liệu và là cán bộ phụ trách mảng kỹ thuật liên quan đến báo
+                                cáo kinh tế kỹ thuật, cấu phần DLP cloud. Ngoài ra, là cán bộ đầu mối xây dựng và phát
+                                triển ứng dụng, công cụ phân loại và gán nhãn cho file dữ liệu dựa trên các rule và
+                                policy do các thành viên trong tổ nghiệp vụ ban hành quy định phân loại và gán nhãn dữ liệu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

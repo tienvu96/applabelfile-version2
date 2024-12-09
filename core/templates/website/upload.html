@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- Load the external CSS file -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/upload.css' %}">
+
+<!-- File Upload Section -->
+<div class="container upload-section">
+    <h2 class="pb-2 border-bottom">Ứng dụng gán nhãn và phân loại file dữ liệu - Trung tâm quản trị Dữ liệu</h2>
+
+    <div class="row featurette py-5">
+        <!-- Form to upload files -->
+        <div class="col-md-6">
+            <h4>Upload Files (docx, xlsx, etc...)</h4>
+            <form action="." method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input class="form-control" name="file" type="file" id="id_file" multiple>
+                </div>
+                <button class="btn upload-file-btn" type="submit">Upload files</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Uploaded Files Section -->
+<div class="container px-4 py-5" id="files">
+    <h2 class="container-title">Uploaded Files</h2>
+    <div class="uploaded-files-list">
+        <div class="uploaded-files-grid">
+            <!-- Loop through the uploaded documents -->
+            {% for document in documents %}
+            <div class="file-row">
+                <span class="file-name" title="{{ document.file.name }}">{{ document.file.name|cut:'gallery/' }}</span>
+                <div class="file-actions">
+                    <!-- Delete button -->
+                    <form action="{% url 'website:file-delete' document.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="btn uploaded-file-delete-btn" type="submit" title="Delete">
+                            <img src="{% static 'images/remove_icon.png' %}" alt="Delete" class="icon">
+                        </button>
+                    </form>
+                    <!-- Scan button -->
+                    <a href="{% url 'website:scan-file' document.id %}">
+                        <button class="btn uploaded-file-scan-btn" type="button" title="Discovery">
+                            <img src="{% static 'images/discovery_icon.png' %}" alt="Discovery" class="icon">
+                        </button>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Define the maximum length for the displayed file name
+        const maxLength = 20; // Bạn có thể thay đổi độ dài này
+
+        // Get all elements with the class 'file-name'
+        const fileNames = document.querySelectorAll('.file-name');
+
+        fileNames.forEach(function(fileElement) {
+            let fileName = fileElement.innerText;
+            let extension = fileName.split('.').pop(); // Lấy phần mở rộng của file
+            let nameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+
+            // Nếu tên file dài hơn maxLength thì cắt và thêm "..."
+            if (nameWithoutExtension.length > maxLength) {
+                let shortName = nameWithoutExtension.substring(0, maxLength / 2) + '...' + nameWithoutExtension.substring(nameWithoutExtension.length - (maxLength / 2));
+                fileElement.innerText = shortName + '.' + extension; // Gắn lại phần tên mới
+            }
+        });
+    });
+</script> -->
+
+
+{% endblock %}

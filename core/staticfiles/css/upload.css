@@ -1,0 +1,81 @@
+/* Styling for the upload section */
+.upload-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* General button styling */
+.upload-file-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.uploaded-file-delete-btn, .uploaded-file-scan-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.uploaded-file-delete-btn img, .uploaded-file-scan-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Container styling for uploaded files */
+.uploaded-files-list {
+    background-color: #fff8e1;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.uploaded-files-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Hiển thị 2 phần tử trên mỗi hàng */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+/* Each file row */
+.file-row {
+    display: flex; /* Sắp xếp theo hàng ngang */
+    justify-content: space-between; /* Đặt khoảng cách giữa tên file và các nút */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+    background-color: #e2ebf7;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* File name styling */
+.file-name {
+    white-space: nowrap; /* Đảm bảo tên file không bị xuống dòng */
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    flex-grow: 1; /* Để tên file chiếm khoảng trống còn lại */
+    margin-right: 10px; /* Khoảng cách giữa tên file và các icon */
+}
+
+/* Icon button container: Flexbox to align buttons horizontally */
+.file-actions {
+    display: flex; /* Dùng flex để các nút nằm ngang nhau */
+    gap: 5px; /* Khoảng cách nhỏ giữa các nút */
+}
+
+/* Responsive layout: Chuyển thành 1 phần tử trên mỗi hàng khi màn hình nhỏ */
+@media (max-width: 768px) {
+    .uploaded-files-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* File name styling */
+.file-name {
+    white-space: nowrap; /* Đảm bảo tên file không bị xuống dòng */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Hiển thị dấu '...' nếu tên file quá dài */
+    flex-grow: 1; /* Để tên file chiếm khoảng trống còn lại */
+    margin-right: 10px; /* Khoảng cách giữa tên file và các icon */
+}
+

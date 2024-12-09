@@ -1,0 +1,120 @@
+/* General container styling */
+.scan-results-section {
+    background-color: #f4f7f9;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.container-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Textarea styling */
+.scan-result-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    resize: none;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Button styling */
+.scan-result-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.button-common {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+/* Edit label button styling */
+.label-btn {
+    background-color: #007bff;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.dropdown-arrow {
+    margin-left: 10px;
+    font-size: 1rem;
+}
+
+.label-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+/* Download button with icon */
+.download-btn {
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+.download-icon {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.download-btn:hover .download-icon {
+    transform: scale(1.1);
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    z-index: 100;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .scan-result-buttons {
+        flex-direction: column;
+    }
+
+    .button-common {
+        width: 100%;
+    }
+}

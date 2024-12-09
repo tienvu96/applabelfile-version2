@@ -1,0 +1,35 @@
+/* Fix the header and footer in place */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff; /* Or your preferred background color */
+    z-index: 1000; /* Ensure it's on top */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff; /* Or your preferred background color */
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Add margin to the content so it doesn't overlap with the fixed header and footer */
+.content {
+    margin-top: 80px;
+    margin-bottom: 60px;
+    padding: 20px;
+}
+
+/* Ensure the content takes up remaining space between the fixed header and footer */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}

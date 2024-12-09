@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/scan.css' %}">
+
+<div class="container px-4 py-5 scan-results-section" id="scan-results">
+    <h2 class="container-title">Kết quả scan file</h2>
+    <div class="row justify-content-center">
+        <!-- Display the scan result in the textarea -->
+        <textarea class="scan-result-textarea" readonly>{{ scan_result }}</textarea>
+
+        <div class="scan-result-buttons mt-3 text-center">
+            <!-- Scan button -->
+            <form action="{% url 'website:label-file' file_id %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="label" value="{{ scan_result }}"> <!-- Lấy nhãn từ kết quả scan -->
+                <button class="btn label-btn" type="submit">Label File</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

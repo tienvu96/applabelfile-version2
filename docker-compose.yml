@@ -1,0 +1,39 @@
+version: "3.10"
+
+services:
+  db:
+    container_name: db
+    image: postgres:alpine
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDB_VENDOR=postgres
+      - PGDATA=/var/lib/postgresql/data
+    restart: always
+    networks:
+      - app-network  # Thêm dịch vụ db vào mạng chung
+
+  backend:
+    build:
+      context: .
+    container_name: backend
+    volumes:
+      - ./core:/usr/src/app
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=test
+      - DEBUG=True
+      - SHOW_DEBUGGER_TOOLBAR=True
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/rule.css' %}"> -->
+
+<h2> Danh sách các rule đang áp dụng dưới đây:</h2>
+
+<body>
+    <table class="dlp-table">
+        <thead>
+            <tr>
+                <th style="text-align: center; vertical-align: middle;">STT</th>
+                <th style="text-align: center; vertical-align: middle;">Nhóm thông tin</th>
+                <th style="text-align: center; vertical-align: middle;">Mức độ Bảo mật</th>
+                <th style="text-align: center; vertical-align: middle;">Diễn giải</th>
+                <th style="text-align: center; vertical-align: middle;">Định nghĩa trên DLP theo Pattern/Keyword</th>
+                <th style="text-align: center; vertical-align: middle;">Trọng số</th>
+                <th style="text-align: center; vertical-align: middle;">Ngưỡng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- STT 1: Thông tin định danh khách hàng -->
+            <tr>
+                <td rowspan="5">1</td>
+                <td rowspan="5">Thông tin định danh khách hàng (cơ bản)</td>
+                <td rowspan="5">MẬT</td>
+                <td style="text-align: center; vertical-align: middle;">Tên khách hàng</td>
+                <td>Tên khách hàng, Họ và tên, Họ tên, Name, Full name</td>
+                <td>1</td>
+                <td rowspan="5">Xuất hiện tối thiểu 3 trong 5 thông tin định danh khách hàng<br> keyword: 1 <br> regex: 10</td>
+            </tr>
+            <tr>
+                <td>Địa chỉ</td>
+                <td>"địa chỉ": re.compile(r'(\d+)\s+(đường|phố|phường|quận|thành phố)\s+(\w+),\s+(\w+),\s+(\w+)') <br>
+                    Giải thích: Biểu thức chính quy (regex) này được thiết kế để trích xuất thông tin địa chỉ có cấu trúc (số nhà, đường, quận, thành phố, v.v.) <br>
+                    từ các địa chỉ tiếng Việt. Các nhóm bắt (capturing groups) đảm bảo rằng từng phần của địa chỉ có thể được truy xuất và xử lý riêng biệt.
+                </td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>ID number (CMND/CCCD)</td>
+                <td>"id number (cccd/cmnd)": re.compile(
+                    r'\b(?:cmnd|cccd|CMND|CCCD)\b.*\b\d{9}\b|\b(?:cmnd|cccd|CMND|CCCD)\b.*\b\d{12}\b|\b\d{9}\b|\b\d{12}\b')<br>
+                    Giải thích: Biểu thức tìm kiếm các số CMND hoặc CCCD có hoặc không có từ khóa như "CMND" hoặc "CCCD". <br>
+                    Đảm bảo nhận diện chính xác dãy số dài 9 hoặc 12 chữ số.<br>
+                    Bao gồm các trường hợp có từ khóa (ví dụ: "CMND số...") hoặc chỉ là dãy số độc lập (ví dụ: "123456789").
+                </td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Số điện thoại</td>
+                <td>"số điện thoại": re.compile(r'\b(0\d{9}|\+[\d]{11})\b')<br>
+                    Giải thích: Regex này được sử dụng để xác định và trích xuất số điện thoại trong văn bản, hỗ trợ cả số điện thoại nội địa Việt Nam (10 chữ số) và quốc tế (11 chữ số sau +).
+                </td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>"email": re.compile(r'\S+@\S+')<br>
+                    Giải thích: Biểu thức chính quy (regex) này được thiết kế để nhận diện các địa chỉ email trong một chuỗi văn bảnBiểu thức chính quy (regex) này được thiết kế để nhận diện các địa chỉ email trong một chuỗi văn bản.<br>
+                    Bao gồm: Sự hiện diện của @ trong chuỗi và các ký tự trước và sau @ không phải khoảng trắng.
+                </td>
+                <td>1</td>
+            </tr>
+
+            <!-- STT 2: Thông tin thẻ -->
+            <tr>
+                <td rowspan="4">2</td>
+                <td rowspan="4">Thông tin thẻ</td>
+                <td rowspan="4">MẬT</td>
+                <td style="text-align: center; vertical-align: middle;">CVV</td>
+                <td>Chuỗi 3 ký tự chứa cvv và pattern "cvv": re.compile(r"(?i)(\bCVV\b[\s\S]*?\b\d{3}\b)")</td>
+                <td>1</td>
+                <td rowspan="4">Xuất hiện cả 4 thông tin</td>
+            </tr>
+            <tr>
+                <td>Số thẻ</td>
+                <td>
+                    "số thẻ": re.compile(
+                        r'''
+                        \b                                        # Start of word boundary<br>
+                        (?:9704|476632|411153|428695|427126|402460|406220|511957|<br>
+                           517107|517453|542726|530515|515110|51511)  # Card prefixes<br>
+                        (                                         # Matching options<br>
+                            \d{10,15}                             # 10-15 digit numbers<br>
+                            |\d{16}                               # 16 digit numbers<br>
+                            |\d{19}                               # 19 digit numbers<br>
+                            |\d{20}                               # 20 digit numbers<br>
+                            |\d{3} \d{4} \d{4} \d{4} \d{4}        # 16 digits in 3-4-4-4 groups<br>
+                            |\d{4} \d{4} \d{4} \d{4} \d{3}        # 19 digits in 4-4-4-4-3 groups<br>
+                            |\d{4} \d{4} \d{4} \d{4} \d{4}        # 20 digits in 4-4-4-4-4 groups<br>
+                        )<br>
+                        \b                                        # End of word boundary<br>
+                        ''', re.VERBOSE
+                    )
+                </td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Ngày hết hạn</td>
+                <td>Ngày hết hạn</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Tên chủ thẻ</td>
+                <td>Tên chủ thẻ, Chủ thẻ.</td>
+                <td>1</td>
+            </tr>
+
+
+            <!-- STT 3: Thông tin thẻ -->
+            <tr>
+                <td rowspan="3">3</td>
+                <td rowspan="3">Thông tin các dự án CNTT</td>
+                <td rowspan="3">MẬT</td>
+                <td style="text-align: center; vertical-align: middle;">Thông tin về chủ trương đầu tư Dự án CNTT (thời điểm phát hành hồ sơ mời thầu)</td>
+                <td>Dự án, Mục tiêu đầu tư, Sự cần thiết, Phương án đầu tư, Hạng mục, Cấu phần mua sắm, Tuân thủ kiến trúc, Phương án kỹ thuật sơ bộ, Khai toán, Hiệu quả đầu tư, Báo giá</td>
+                <td>1</td>
+                <td rowspan="3">Xuất hiện ít nhất một từ khoá</td>
+            </tr>
+            <tr>
+                <td>Thông tin về tiêu chuẩn kinh tế kỹ thuật của Dự án CNTT (trước thời điểm phát hành hồ sơ mời thầu)</td>
+                <td>Kinh tế kỹ thuật, Căn cứ pháp lý, Nội dung dự án, Mục tiêu đầu tư, Tổng mức đầu tư, Mức độ tuân thủ kiến trúc, 
+                    Yêu cầu về làm chủ, Hình thức mua sắm bản quyền, Cấp độ hệ thống thông tin, Mức độ kiểm soát, rủi ro, Tiêu chuẩn kỹ thuật,
+                    Dự toán chi tiết, Kế hoạch lựa chọn nhà thầu, Giá gói thầu, Phương thức lựa chọn nhà thầu
+                </td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Thông tin mời thầu của Dự án CNTT (trước thời điểm phát hành hồ sơ mời thầu)</td>
+                <td>Hồ sơ mời thầu, Số hiệu gói thầu, Tên gói thầu, Thủ tục đấu thầu, Yêu cầu về kỹ thuật, Biểu mẫu hợp đồng, Chỉ dẫn nhà thầu, Bảng dữ liệu đấu thầu, Biểu mẫu mời thầu và dự thầu,
+                    Bảng dữ liệu đầu thầu, Biểu mẫu mời thầu và dự thầu, Tiêu chuẩn đánh giá về kỹ thuật, Năng lực và kinh nghiệm
+                </td>
+                <td>1</td>
+            </tr>
+        
+
+            <!-- STT 4: Báo cáo của chủ đầu tư Dự án -->
+            <tr>
+                <td rowspan="1">4</td>
+                <td rowspan="1">Thông tin kết quả thực hiện các chỉ tiêu kinh doanh (quy mô, thu nhập, LNTT...) của các đơn vị (khối/ban/chi nhánh)</td>
+                <td rowspan="1">MẬT</td>
+                <td></td>
+                <td>DNTD BQ, DNTD CK, HĐV BQ, HĐV CK, TNT, NIM TD, NIM HĐV, Số lượng KH, Số lượng khách hàng, SLKH, Số lượng sản phẩm, SLSP, CIR, CLTC 
+                    </td>
+                <td>1</td>
+                <td>Xuất hiện ít nhất một từ khoá</td>
+            </tr>
+
+            <!-- STT 5: Báo cáo tài chính hàng quý -->
+            <tr>
+                <td rowspan="1">5</td>
+                <td rowspan="1">Thông tin hệ thống MIS, ODS, MPA</td>
+                <td rowspan="1">MẬT</td>
+                <td></td>
+                <td>ETL, Tài liệu mapping chi tiết</td>
+                <td>1</td>
+                <td>Xuất hiện ít nhất một từ khoá</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding:0;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 2px;
+            margin-top: 0px;
+
+        }
+
+        .dlp-table {
+            width: calc(100% - 2cm); /* Đảm bảo bảng không vượt quá khung lề */
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid black;
+            margin-left: 1cm; /* Khoảng cách lề trái 1cm */
+            margin-right: 1cm;
+            margin-bottom: 2cm;
+        }
+
+
+        .dlp-table thead th {
+            background-color: #009879;
+            color: #fff;
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border: 1px solid black;
+        }
+
+        .dlp-table tbody td {
+            padding: 15px;
+            color: #333;
+            font-size: 14px;
+            border: 1px solid black;
+            text-align: left;
+        }
+
+        .dlp-table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .dlp-table tbody tr:hover {
+            background-color: #e8f0fe;
+            cursor: pointer;
+        }
+
+        .dlp-table tbody td:first-child,
+        .dlp-table tbody th:first-child {
+            text-align: center;
+        }
+
+        .dlp-table tbody tr td[rowspan] {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        /* Add color to security levels */
+        .dlp-table tbody td:nth-child(3) {
+            color: #333;
+        }
+
+        /* Define custom scroll for table */
+        .dlp-table {
+            border-spacing: 0;
+            display: block;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .dlp-table thead {
+                display: none;
+            }
+
+            .dlp-table,
+            .dlp-table tbody,
+            .dlp-table tr,
+            .dlp-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .dlp-table tr {
+                margin-bottom: 15px;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .dlp-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border: 1px solid black;
+            }
+
+            .dlp-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+                color: #555;
+            }
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+{% endblock %}

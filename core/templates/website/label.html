@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Labeling Results</title>
+    <style>
+        /* General container styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 500px;
+            background-color: #fff;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Textarea styling */
+        .scan-result-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Button styling */
+        .scan-result-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .button-common {
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            position: relative;
+        }
+
+        /* Edit label button styling */
+        .label-btn {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+
+        .dropdown-arrow {
+            margin-left: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .label-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Download button with icon */
+        .download-btn {
+            padding: 0;
+            display: inline-block;
+            height: 50px;
+            width: 50px;
+            cursor: pointer;
+        }
+
+        .download-icon {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        /* Dropdown menu styling */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            top: 60px;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="label-results">
+        <h2 class="container-title">Kết quả gán nhãn file</h2>
+        <div class="row justify-content-center">
+            <!-- Display the label result in the textarea -->
+            <textarea class="scan-result-textarea" readonly>{{ scan_result }}</textarea>
+
+            <div class="scan-result-buttons mt-3 text-center">
+                <!-- Edit Label button with dropdown options -->
+                <div class="dropdown">
+                    <button class="btn button-common label-btn" id="labelDropdown" type="button">
+                        Edit Label <span class="dropdown-arrow">&#9660;</span>
+                    </button>
+                    <ul class="dropdown-menu" id="dropdownMenu">
+                        <li><a class="dropdown-item" href="{% url 'website:edit_label' file_id 'internal' %}">Nội bộ</a></li>
+                        <li><a class="dropdown-item" href="{% url 'website:edit_label' file_id 'public' %}">Công khai</a></li>
+                        <li><a class="dropdown-item" href="{% url 'website:edit_label' file_id 'confidential' %}">Mật</a></li>
+                    </ul>
+                </div>
+
+                <!-- Download button with image icon -->
+                <a href="{% url 'website:download-file' file_id %}" class="download-btn" title="Download">
+                    <img src="{% static 'images/download_icon.png' %}" alt="Download" class="download-icon">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle the dropdown menu visibility
+        document.querySelector('.label-btn').addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            dropdownMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

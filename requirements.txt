@@ -1,0 +1,34 @@
+# general  modules
+django
+Pillow
+djangorestframework
+importlib-resources
+openpyxl
+pandas
+python-docx
+
+# env controlls
+python-decouple
+
+# third party modules
+markdown       
+django-filter  
+drf-yasg[validation]
+djangorestframework-simplejwt
+django-cors-headers
+django-robots
+django-debug-toolbar
+django-multiupload
+
+# deployment module
+gunicorn
+
+# refactoring and tests
+black
+flake8
+pytest
+pytest-django
+Faker
+
+# database client
+psycopg2-binary
