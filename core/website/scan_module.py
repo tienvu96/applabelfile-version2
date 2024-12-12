@@ -372,12 +372,12 @@ def define_rules():
         "rule_3": {
             "thông tin về chủ trương đầu tư dự án cntt (thời điểm phát hành hồ sơ mời thầu)": 
                 [
-                    "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", "hạng mục", "cấu phần mua sắm", 
+                    "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", "hạng mục/cấu phần mua sắm", 
                     "tuân thủ kiến trúc", "phương án kỹ thuật sơ bộ", "khai toán", "hiệu quả đầu tư", "báo giá"
                 ],
             "thông tin về tiêu chuẩn kinh tế kỹ thuật của dự án cntt (trước thời điểm phát hành hồ sơ mời thầu)": 
                 [
-                    "kinh tế kỹ thuật", "căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", 
+                    "kinh tế kỹ thuật","dự án","căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", 
                     "mức độ tuân thủ kiến trúc", "yêu cầu về làm chủ", "hình thức mua sắm bản quyền", 
                     "cấp độ hệ thống thông tin", "mức độ kiểm soát", "rủi ro", "tiêu chuẩn kỹ thuật", 
                     "dự toán chi tiết", "kế hoạch lựa chọn nhà thầu", "giá gói thầu", "phương thức lựa chọn nhà thầu"
@@ -390,16 +390,17 @@ def define_rules():
                     "tiêu chuẩn đánh giá về kỹ thuật", "năng lực và kinh nghiệm"
                 ]
         },
-        "rule_4": [
-            "dntd bq", "dntd ck", "hđv bq", "hđv ck", "tnt", "nim td", "nim hđv", 
-            "số lượng kh", "số lượng khách hàng", "slkh", "số lượng sản phẩm", "slsp", "cir", "cltc"
-        ],
+        "rule_4": {
+            "or_1": ["dntd bq","dntd ck"],
+            "or_2": ["số lượng sản phẩm","slsp"],
+            "or_3": ["số lượng khách hàng","số lượng kh", "slkh" ],
+            "or_4": ["hđv bq", "hđv ck"],
+            "and":  ["tnt", "nim td", "nim hđv", "cir", "cltc"]
+                },
         "rule_5": [
             "etl", "tài liệu mapping chi tiết"
         ]
     }
-
-
     return rules
 
 
@@ -488,44 +489,6 @@ def scan_file(file_path):
     print(type(results_json)) # nó là dict
     return results_json
  
-# Kết quả trả về của results_json mẫu dưới đây
-# {
-#   "Keywords": [
-#     {
-#       "Found Keyword": "chủ thẻ",
-#       "num of the same keyword": 1
-#     },
-#     {
-#       "Found Keyword": "Dự án",
-#       "num of the same keyword": 1
-#     },
-#     {
-#       "Found Keyword": "Mục tiêu đầu tư",
-#       "num of the same keyword": 1
-#     },
-#     {
-#       "Found Keyword": "Sự cần thiết",
-#       "num of the same keyword": 1
-#     },
-#     {
-#       "Found Keyword": "Phương án đầu tư",
-#       "num of the same keyword": 1
-#     }
-#   ],
-#   "Patterns": [
-#     {
-#       "Pattern Name": "số điện thoại",
-#       "num of the same pattern": 1
-#     },
-#     {
-#       "Pattern Name": "email",
-#       "num of the same pattern": 1
-#     }
-#   ]
-# }
-
-
-
 
 def convert_string_to_json_rule_one(input_string):
     """
@@ -589,16 +552,14 @@ def convert_string_to_json_rule_two(input_string):
     return pretty_json
 
 
-
 # def classify_document_with_multiple_rules(results, rules):
 #     """
 #     Classify a document based on multiple rules by checking keywords and patterns.
 
-
 #     Parameters:
-#     - results: Dictionary containing scan results with found keywords and patterns. Here, result = result_json in scan_file func.
+#     - results: Dictionary containing scan results with found keywords and patterns. 
+#                Here, result = result_json in scan_file func.
 #     - rules: Dictionary containing multiple rule sets to compare with results.
-
 
 #     Returns:
 #     - str: Classification label (e.g., 'Confidential', 'Public', etc.).
@@ -630,7 +591,10 @@ def convert_string_to_json_rule_two(input_string):
 #             return any(keyword in result_keywords for keyword in rule_keywords)
 #         return rule_keywords in result_keywords
 
-#     # Condition For Rule 1: Match at least 3 values and check if certain patterns have count >= 10
+#     # Initialize the list to collect satisfied rules
+#     satisfied_rules = []
+
+#     # Check Rule 1
 #     rule_1_matches = 0
 #     matched_rule_1_keys = []
 #     matched_pattern_counts = []
@@ -645,23 +609,14 @@ def convert_string_to_json_rule_two(input_string):
 #             if pattern_match:
 #                 matched_pattern_counts.append(f"{key}: {found_patterns[key]}")
 
-#     # if rule_1_matches >= 3:
-#     #     sms_scan = f"Tìm thấy nội dung mật rule 1: {rule_1_matches} key(s) matched: {', '.join(matched_rule_1_keys)}. Pattern counts: {', '.join(matched_pattern_counts)}"
-#     #     pretty_sms_scan = convert_string_to_json_rule_one(sms_scan)
-#     #     return "Confidential", pretty_sms_scan
-    
 #     if rule_1_matches >= 3:
-#     # Tạo JSON trực tiếp
-#         result_json = {
+#         satisfied_rules.append({
 #             "rule": 1,
-#             "matched_keys": matched_rule_1_keys,  # Giả sử đây là danh sách các từ khóa khớp
-#             "pattern_counts": matched_pattern_counts  # Giả sử đây là dictionary chứa thông tin pattern counts
-#         }
-#         # Trả về JSON định dạng chuẩn và đẹp
-#         pretty_sms_scan = json.dumps(result_json, indent=4, ensure_ascii=False)
-#         return "Confidential", pretty_sms_scan
+#             "matched_keys": matched_rule_1_keys,
+#             "pattern_counts": matched_pattern_counts
+#         })
 
-#     # Condition For Rule 2: All keys in rule_2 must match
+#     # Check Rule 2
 #     rule_2_matches = True
 #     matched_rule_2_keys = []
 
@@ -674,52 +629,66 @@ def convert_string_to_json_rule_two(input_string):
 #             break
 #         matched_rule_2_keys.append(key)
 
-#     # if rule_2_matches:
-#     #     sms_scan = f"Tìm thấy nội dung mật trong rule 2: {', '.join(matched_rule_2_keys)}"
-#     #     pretty_sms_scan = convert_string_to_json_rule_two(sms_scan)
-#     #     return "Confidential", pretty_sms_scan
 #     if rule_2_matches:
-#         # Tạo JSON trực tiếp
-#         result_json = {
+#         satisfied_rules.append({
 #             "rule": 2,
-#             "matched_keys": matched_rule_2_keys  # Giả sử matched_rule_2_keys là danh sách các từ khóa khớp
-#         }
-#         # Trả về JSON định dạng chuẩn và đẹp
-#         pretty_sms_scan = json.dumps(result_json, indent=4, ensure_ascii=False)
+#             "matched_keys": matched_rule_2_keys
+#         })
+    
+#     # Check Rules 3
+#     if "rule_3" in rules:
+#         rule_3 = rules["rule_3"]
+#         for key, keywords in rule_3.items():
+#             if isinstance(keywords, list) and set(keywords).issubset(found_keywords):
+#                 satisfied_rules.append({
+#                     "rule": 3,
+#                     "key": key,
+#                     "matched_values": keywords
+#                 })
+
+#     # Check Rule 5
+#     if "rule_5" in rules:
+#         rule_5 = rules["rule_5"]
+#         if isinstance(rule_5, list) and set(rule_5).issubset(found_keywords):
+#             satisfied_rules.append({
+#                 "rule": 5,
+#                 "matched_keys": rule_5
+#             })
+    
+#     # Check Rule 4 new
+#     if "rule_4" in rules:
+#         rule_4 = rules["rule_4"]
+#         matched_keywords = set()
+#         or_values = {}  # Dictionary to store all "or" values for further usage
+        
+#         if isinstance(rule_4, dict):
+#             # Check 'and' condition
+#             and_keywords = set(rule_4.get("and", []))
+#             if and_keywords.issubset(found_keywords):
+#                 # Check 'or' conditions
+#                 or_matched = False
+#                 for or_key in ["or_1", "or_2", "or_3", "or_4"]:
+#                     or_keywords = set(rule_4.get(or_key, []))
+#                     or_values[or_key] = list(or_keywords)  # Store the raw values from "or"
+#                     if or_keywords & found_keywords:  # Intersection to check at least one match
+#                         or_matched = True
+#                         matched_keywords.update(or_keywords & found_keywords)
+                
+#                 if or_matched:
+#                     matched_keywords.update(and_keywords)
+#                     satisfied_rules.append({
+#                         "rule": 4,
+#                         "matched_keys": list(matched_keywords),
+#                         "or_values": or_values  # Add all "or" values to the result
+#                     })
+
+#     # Return all satisfied rules if any
+#     if satisfied_rules:
+#         pretty_sms_scan = json.dumps(satisfied_rules, indent=4, ensure_ascii=False)
 #         return "Confidential", pretty_sms_scan
 
-
-#     # Check matches for rules 3, 4, and 5
-#     matched_rule = None
-#     matched_keywords = set()
-
-#     for rule_id, rule_keywords in rules.items():
-#         if rule_id in ["rule_3", "rule_4", "rule_5"]:
-#             if isinstance(rule_keywords, dict):  # Rule is a dict of keyword lists
-#                 for subkey, sub_keywords in rule_keywords.items():
-#                     if matches_keywords_rule(found_keywords, sub_keywords):
-#                         matched_rule = int(rule_id.split("_")[1])
-#                         matched_keywords.update(
-#                             keyword for keyword in found_keywords if keyword in sub_keywords)
-#             elif isinstance(rule_keywords, list):  # Rule is a flat list of keywords
-#                 if matches_keywords_rule(found_keywords, rule_keywords):
-#                     matched_rule = int(rule_id.split("_")[1])
-#                     matched_keywords.update(
-#                         keyword for keyword in found_keywords if keyword in rule_keywords)
-
-#     # If matches found for rule 3, 4, or 5, return the classified label and details
-#     if matched_rule:
-#         sms = {
-#             "rule": matched_rule,
-#             "matched_keys": list(matched_keywords)
-#         }
-#         pretty_sms = json.dumps(sms, indent=4, ensure_ascii=False)
-
-#         return "Confidential", pretty_sms
-
-#     # If no conditions match, return "Internal"
-#     return "Internal", "Không tìm thấy nội dung mật"
-
+#     # Default case: No matches for any rules
+#     return "Public", "Không có quy tắc nào được áp dụng."
 
 
 def classify_document_with_multiple_rules(results, rules):
@@ -727,8 +696,7 @@ def classify_document_with_multiple_rules(results, rules):
     Classify a document based on multiple rules by checking keywords and patterns.
 
     Parameters:
-    - results: Dictionary containing scan results with found keywords and patterns. 
-               Here, result = result_json in scan_file func.
+    - results: Dictionary containing scan results with found keywords and patterns.
     - rules: Dictionary containing multiple rule sets to compare with results.
 
     Returns:
@@ -739,17 +707,18 @@ def classify_document_with_multiple_rules(results, rules):
         return "chưa làm", "Hiện tại không hỗ trợ định dạng tệp."
 
     if not isinstance(results, dict):
-        return "Unsupport file", "Kết quả không hợp lệ."
+        return "Unsupported file", "Kết quả không hợp lệ."
 
     if 'Keywords' not in results or not isinstance(results['Keywords'], list):
         return "Public", "Không tìm thấy từ khóa hợp lệ trong kết quả."
 
     try:
         # Extract keywords and patterns from the results
-        found_keywords = {item['Found Keyword'] for item in results['Keywords'] if isinstance(
-            item, dict) and 'Found Keyword' in item}
+        found_keywords = {item['Found Keyword'] for item in results['Keywords'] 
+                          if isinstance(item, dict) and 'Found Keyword' in item}
         found_patterns = {item['Pattern Name']: item['num of the same pattern']
-                          for item in results['Patterns'] if isinstance(item, dict) and 'Pattern Name' in item and 'num of the same pattern' in item}
+                          for item in results['Patterns'] 
+                          if isinstance(item, dict) and 'Pattern Name' in item and 'num of the same pattern' in item}
     except TypeError as e:
         return "Internal", f"Đã xảy ra lỗi khi phân tích kết quả: {str(e)}"
 
@@ -765,70 +734,62 @@ def classify_document_with_multiple_rules(results, rules):
     satisfied_rules = []
 
     # Check Rule 1
-    rule_1_matches = 0
-    matched_rule_1_keys = []
-    matched_pattern_counts = []
+    rule_1_matches = []
 
-    for key, value in rules['rule_1'].items():
+    for key, value in rules.get('rule_1', {}).items():
         keyword_match = matches_keywords_rule(found_keywords, value)
         pattern_match = key in found_patterns and found_patterns[key] >= 10
 
         if keyword_match or pattern_match:
-            rule_1_matches += 1
-            matched_rule_1_keys.append(key)
-            if pattern_match:
-                matched_pattern_counts.append(f"{key}: {found_patterns[key]}")
+            rule_1_matches.append(key)
 
-    if rule_1_matches >= 3:
-        satisfied_rules.append({
-            "rule": 1,
-            "matched_keys": matched_rule_1_keys,
-            "pattern_counts": matched_pattern_counts
-        })
+    if len(rule_1_matches) >= 3:
+        satisfied_rules.append({"rule": 1, "matched_keys": rule_1_matches})
 
     # Check Rule 2
-    rule_2_matches = True
-    matched_rule_2_keys = []
+    rule_2_matches = []
+    all_rules_matched = True
 
-    for key, value in rules['rule_2'].items():
+    for key, value in rules.get('rule_2', {}).items():
         keyword_match = matches_keywords_rule(found_keywords, value)
         pattern_match = key in found_patterns
 
         if not (keyword_match or pattern_match):
-            rule_2_matches = False
+            all_rules_matched = False
             break
-        matched_rule_2_keys.append(key)
 
-    if rule_2_matches:
-        satisfied_rules.append({
-            "rule": 2,
-            "matched_keys": matched_rule_2_keys
-        })
+        rule_2_matches.append(key)
 
-    # Check Rules 3, 4, 5
-    for rule_id, rule_keywords in rules.items():
-        if rule_id in ["rule_3", "rule_4", "rule_5"]:
-            matched_keywords = set()
-            if isinstance(rule_keywords, dict):  # Rule is a dict of keyword lists
-                for subkey, sub_keywords in rule_keywords.items():
-                    if matches_keywords_rule(found_keywords, sub_keywords):
-                        matched_keywords.update(
-                            keyword for keyword in found_keywords if keyword in sub_keywords)
-            elif isinstance(rule_keywords, list):  # Rule is a flat list of keywords
-                if matches_keywords_rule(found_keywords, rule_keywords):
-                    matched_keywords.update(
-                        keyword for keyword in found_keywords if keyword in rule_keywords)
+    if all_rules_matched:
+        satisfied_rules.append({"rule": 2, "matched_keys": rule_2_matches})
 
-            if matched_keywords:
-                satisfied_rules.append({
-                    "rule": int(rule_id.split("_")[1]),
-                    "matched_keys": list(matched_keywords)
-                })
+    # Check Rule 3
+    for key, keywords in rules.get('rule_3', {}).items():
+        if isinstance(keywords, list) and set(keywords).issubset(found_keywords):
+            satisfied_rules.append({"rule": 3, "key": key, "matched_keys": keywords})
+
+    # Check Rule 5
+    rule_5_keywords = rules.get('rule_5', [])
+    if isinstance(rule_5_keywords, list) and set(rule_5_keywords).issubset(found_keywords):
+        satisfied_rules.append({"rule": 5, "matched_keys": rule_5_keywords})
+
+    # Check Rule 4
+    rule_4 = rules.get('rule_4', {})
+    if isinstance(rule_4, dict):
+        and_keywords = set(rule_4.get('and', []))
+        if and_keywords.issubset(found_keywords):
+            matched_keywords = and_keywords
+            for or_key in ["or_1", "or_2", "or_3", "or_4"]:
+                or_keywords = set(rule_4.get(or_key, []))
+                if or_keywords & found_keywords:
+                    matched_keywords.update(or_keywords & found_keywords)
+
+            satisfied_rules.append({"rule": 4, "matched_keys": list(matched_keywords)})
 
     # Return all satisfied rules if any
     if satisfied_rules:
-        pretty_sms_scan = json.dumps(satisfied_rules, indent=4, ensure_ascii=False)
-        return "Confidential", pretty_sms_scan
+        classification_details = json.dumps(satisfied_rules, indent=4, ensure_ascii=False)
+        return "Confidential", classification_details
 
     # Default case: No matches for any rules
     return "Public", "Không có quy tắc nào được áp dụng."
