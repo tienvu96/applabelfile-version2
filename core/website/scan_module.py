@@ -1,7 +1,7 @@
-# from django.http import HttpResponseRedirect
-# from django.shortcuts import get_object_or_404, redirect
-# from django.http import HttpResponse
-# from .models import Photo
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse
+from .models import Photo
 import os
 import json
 import pandas as pd
@@ -372,22 +372,15 @@ def define_rules():
         "rule_3": {
             "thông tin về chủ trương đầu tư dự án cntt (thời điểm phát hành hồ sơ mời thầu)": 
                 [
-                    "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", "hạng mục/cấu phần mua sắm", 
-                    "tuân thủ kiến trúc", "phương án kỹ thuật sơ bộ", "khai toán", "hiệu quả đầu tư", "báo giá"
+                    "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", "hạng mục/cấu phần mua sắm", "tuân thủ kiến trúc", "phương án kỹ thuật sơ bộ", "khai toán", "hiệu quả đầu tư", "báo giá"
                 ],
             "thông tin về tiêu chuẩn kinh tế kỹ thuật của dự án cntt (trước thời điểm phát hành hồ sơ mời thầu)": 
                 [
-                    "kinh tế kỹ thuật","dự án","căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", 
-                    "mức độ tuân thủ kiến trúc", "yêu cầu về làm chủ", "hình thức mua sắm bản quyền", 
-                    "cấp độ hệ thống thông tin", "mức độ kiểm soát", "rủi ro", "tiêu chuẩn kỹ thuật", 
-                    "dự toán chi tiết", "kế hoạch lựa chọn nhà thầu", "giá gói thầu", "phương thức lựa chọn nhà thầu"
+                    "kinh tế kỹ thuật","dự án","căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", "mức độ tuân thủ kiến trúc", "yêu cầu về làm chủ", "hình thức mua sắm bản quyền", "cấp độ hệ thống thông tin", "mức độ kiểm soát", "rủi ro", "tiêu chuẩn kỹ thuật", "dự toán chi tiết", "kế hoạch lựa chọn nhà thầu", "giá gói thầu", "phương thức lựa chọn nhà thầu"
                 ],
             "thông tin mời thầu của dự án cntt (trước thời điểm phát hành hồ sơ mời thầu)": 
                 [
-                    "hồ sơ mời thầu", "số hiệu gói thầu", "tên gói thầu", "thủ tục đấu thầu", 
-                    "yêu cầu về kỹ thuật", "biểu mẫu hợp đồng", "chỉ dẫn nhà thầu", 
-                    "bảng dữ liệu đầu thầu", "biểu mẫu mời thầu và dự thầu", 
-                    "tiêu chuẩn đánh giá về kỹ thuật", "năng lực và kinh nghiệm"
+                    "hồ sơ mời thầu", "số hiệu gói thầu", "tên gói thầu", "thủ tục đấu thầu", "yêu cầu về kỹ thuật", "biểu mẫu hợp đồng", "chỉ dẫn nhà thầu", "bảng dữ liệu đầu thầu", "biểu mẫu mời thầu và dự thầu", "tiêu chuẩn đánh giá về kỹ thuật", "năng lực và kinh nghiệm"
                 ]
         },
         "rule_4": {
@@ -691,23 +684,14 @@ def convert_string_to_json_rule_two(input_string):
 #     return "Public", "Không có quy tắc nào được áp dụng."
 
 
+# new 16 12 2024
+
 def classify_document_with_multiple_rules(results, rules):
-    """
-    Classify a document based on multiple rules by checking keywords and patterns.
-
-    Parameters:
-    - results: Dictionary containing scan results with found keywords and patterns.
-    - rules: Dictionary containing multiple rule sets to compare with results.
-
-    Returns:
-    - str: Classification label (e.g., 'Confidential', 'Public', etc.).
-    - str: JSON string with classification details or an error message.
-    """
     if results == "chưa làm" or results is None:
         return "chưa làm", "Hiện tại không hỗ trợ định dạng tệp."
 
     if not isinstance(results, dict):
-        return "Unsupported file", "Kết quả không hợp lệ."
+        return "Unsupport file", "Kết quả không hợp lệ."
 
     if 'Keywords' not in results or not isinstance(results['Keywords'], list):
         return "Public", "Không tìm thấy từ khóa hợp lệ trong kết quả."
@@ -722,77 +706,98 @@ def classify_document_with_multiple_rules(results, rules):
     except TypeError as e:
         return "Internal", f"Đã xảy ra lỗi khi phân tích kết quả: {str(e)}"
 
-    def matches_keywords_rule(result_keywords, rule_keywords):
-        """
-        Helper function to check if any keywords from the result match the rule's keywords.
-        """
-        if isinstance(rule_keywords, list):
-            return any(keyword in result_keywords for keyword in rule_keywords)
-        return rule_keywords in result_keywords
-
-    # Initialize the list to collect satisfied rules
     satisfied_rules = []
 
     # Check Rule 1
-    rule_1_matches = []
+    rule_1_matches = 0
+    matched_rule_1_keys = []
+    matched_pattern_counts = []
 
-    for key, value in rules.get('rule_1', {}).items():
-        keyword_match = matches_keywords_rule(found_keywords, value)
+    for key, value in rules['rule_1'].items():
+        keyword_match = any(kw in found_keywords for kw in (value if isinstance(value, list) else [value]))
         pattern_match = key in found_patterns and found_patterns[key] >= 10
 
         if keyword_match or pattern_match:
-            rule_1_matches.append(key)
+            rule_1_matches += 1
+            matched_rule_1_keys.append(key)
+            if pattern_match:
+                matched_pattern_counts.append(f"{key}: {found_patterns[key]}")
 
-    if len(rule_1_matches) >= 3:
-        satisfied_rules.append({"rule": 1, "matched_keys": rule_1_matches})
+    if rule_1_matches >= 3:
+        satisfied_rules.append({
+            "rule": 1,
+            "matched_keys": matched_rule_1_keys,
+            "pattern_counts": matched_pattern_counts
+        })
 
     # Check Rule 2
-    rule_2_matches = []
-    all_rules_matched = True
+    # rule_2_matches = True
+    # matched_rule_2_keys = []
 
-    for key, value in rules.get('rule_2', {}).items():
-        keyword_match = matches_keywords_rule(found_keywords, value)
-        pattern_match = key in found_patterns
+    # for key, value in rules['rule_2'].items():
+    #     if not any(kw in found_keywords for kw in (value if isinstance(value, list) else [value])):
+    #         rule_2_matches = False
+    #         break
+    #     matched_rule_2_keys.append(key)
 
-        if not (keyword_match or pattern_match):
-            all_rules_matched = False
-            break
+    # if rule_2_matches and len(matched_rule_2_keys) == len(rules['rule_2']):
+    #     satisfied_rules.append({
+    #         "rule": 2,
+    #         "matched_keys": matched_rule_2_keys
+    #     })
 
-        rule_2_matches.append(key)
+    # # Check Rule 3
+    # matched_rule_3 = []
 
-    if all_rules_matched:
-        satisfied_rules.append({"rule": 2, "matched_keys": rule_2_matches})
+    # for key, value in rules['rule_3'].items():
+    #     # Kiểm tra nếu tất cả các từ khóa trong value xuất hiện đầy đủ trong found_keywords
+    #     if set(value).issubset(found_keywords):
+    #         matched_rule_3.append({
+    #             "rule": 3,
+    #             "key": key,
+    #             "matched_values": list(value)  # Trả về toàn bộ value vì đã khớp tất cả
+    #         })
 
-    # Check Rule 3
-    for key, keywords in rules.get('rule_3', {}).items():
-        if isinstance(keywords, list) and set(keywords).issubset(found_keywords):
-            satisfied_rules.append({"rule": 3, "key": key, "matched_keys": keywords})
+    # if matched_rule_3:
+    #     satisfied_rules.extend(matched_rule_3)
+            
+    # # Check Rule 4
+    # rule_4 = rules['rule_4']
+    # and_keywords = set(rule_4.get('and', []))
+    # or_matches = []
+    # matched_or_keywords = []
 
-    # Check Rule 5
-    rule_5_keywords = rules.get('rule_5', [])
-    if isinstance(rule_5_keywords, list) and set(rule_5_keywords).issubset(found_keywords):
-        satisfied_rules.append({"rule": 5, "matched_keys": rule_5_keywords})
+    # if and_keywords.issubset(found_keywords):
+    #     for or_key in ['or_1', 'or_2', 'or_3', 'or_4']:
+    #         or_keywords = set(rule_4.get(or_key, []))
+    #         matched_keywords = or_keywords & found_keywords
+    #         if matched_keywords:
+    #             or_matches.append(or_key)
+    #             matched_or_keywords.extend(matched_keywords)
 
-    # Check Rule 4
-    rule_4 = rules.get('rule_4', {})
-    if isinstance(rule_4, dict):
-        and_keywords = set(rule_4.get('and', []))
-        if and_keywords.issubset(found_keywords):
-            matched_keywords = and_keywords
-            for or_key in ["or_1", "or_2", "or_3", "or_4"]:
-                or_keywords = set(rule_4.get(or_key, []))
-                if or_keywords & found_keywords:
-                    matched_keywords.update(or_keywords & found_keywords)
+    #     if len(or_matches) == 4:  # All "or" conditions are met
+    #         satisfied_rules.append({
+    #             "rule": 4,
+    #             "and_keywords": list(and_keywords),
+    #             # "or_matches": or_matches,
+    #             "or_keywords": matched_or_keywords
+    #         })
 
-            satisfied_rules.append({"rule": 4, "matched_keys": list(matched_keywords)})
+    # # Check Rule 5
+    # if set(rules['rule_5']).issubset(found_keywords):
+    #     satisfied_rules.append({
+    #         "rule": 5,
+    #         "matched_keywords": rules['rule_5']
+    #     })
 
     # Return all satisfied rules if any
     if satisfied_rules:
-        classification_details = json.dumps(satisfied_rules, indent=4, ensure_ascii=False)
-        return "Confidential", classification_details
+        pretty_sms_scan = json.dumps(satisfied_rules, indent=4, ensure_ascii=False)
+        return "Confidential", pretty_sms_scan
 
     # Default case: No matches for any rules
     return "Public", "Không có quy tắc nào được áp dụng."
+
 
 
 def label_docx_file(file_path, classify):
