@@ -1,12 +1,23 @@
 {
     "từ khoá": [
-        "tên khách hàng", "địa chỉ", "id number (cccd/cmnd)", "số điện thoại","email",
-        "số thẻ", "cvv", "ngày hết hạn", "tên chủ thẻ",
-        "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", "hạng mục/cấu phần mua sắm", "tuân thủ kiến trúc", "phương án kỹ thuật sơ bộ", "khái toán", "hiệu quả đầu tư", "báo giá",
-        "kinh tế kỹ thuật", "dự án", "căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", "mức độ tuân thủ kiến trúc", "yêu cầu về làm chủ", "hình thức mua sắm bản quyền", "cấp độ hệ thống thông tin", "mức độ kiểm soát", "rủi ro", "tiêu chuẩn kỹ thuật", "dự toán chi tiết", "kế hoạch lựa chọn nhà thầu", "giá gói thầu", "phương thức lựa chọn nhà thầu",
-        "hồ sơ mời thầu", "số hiệu gói thầu", "tên gói thầu", "thủ tục đấu thầu", "yêu cầu về kỹ thuật", "biểu mẫu hợp đồng", "chỉ dẫn nhà thầu", "bảng dữ liệu đấu thầu", "biểu mẫu mời thầu và dự thầu", "tiêu chuẩn đánh giá về kỹ thuật", "năng lực và kinh nghiệm",
-        "dntd bq","dntd ck", "hđv bq","hđv ck", "tnt", "nim td", "nim hđv", "số lượng kh","số lượng khách hàng","slkh", "số lượng sản phẩm", "slsp", "cir", "cltc",
-        "etl","tài liệu mapping chi tiết"
+        "email", "id number (cccd/cmnd)","tên khách hàng","địa chỉ","số điện thoại",
+        "số thẻ", "cvv", "ngày hết hạn","tên chủ thẻ",
+        "dự án", "mục tiêu đầu tư", "sự cần thiết", "phương án đầu tư", 
+                    "hạng mục/cấu phần mua sắm", "tuân thủ kiến trúc", "phương án kỹ thuật sơ bộ", 
+                    "khái toán", "hiệu quả đầu tư", "báo giá",
+        "kinh tế kỹ thuật", "căn cứ pháp lý", "nội dung dự án", "mục tiêu đầu tư", "tổng mức đầu tư", 
+                    "mức độ tuân thủ kiến trúc", "yêu cầu về làm chủ", "hình thức mua sắm bản quyền", 
+                    "cấp độ hệ thống thông tin", "mức độ kiểm soát", "rủi ro", "tiêu chuẩn kỹ thuật", 
+                    "dự toán chi tiết", "kế hoạch lựa chọn nhà thầu", "giá gói thầu", "phương thức lựa chọn nhà thầu",
+        "hồ sơ mời thầu", "số hiệu gói thầu", "tên gói thầu", "thủ tục đấu thầu", 
+                    "yêu cầu về kỹ thuật", "biểu mẫu hợp đồng", "chỉ dẫn nhà thầu", 
+                    "bảng dữ liệu đầu thầu", "biểu mẫu mời thầu và dự thầu", 
+                    "tiêu chuẩn đánh giá về kỹ thuật", "năng lực và kinh nghiệm",
+        "dntd bq", "dntd ck", "hđv bq", "hđv ck", "tnt", "nim td", "nim hđv", 
+                    "số lượng kh", "số lượng khách hàng", "slkh", "số lượng sản phẩm", "slsp", "cir", "cltc",
+        "etl", "tài liệu mapping chi tiết",
+        "tên khách hàng", "chủ thẻ", "tên chủ thẻ", "họ và tên", "họ tên", "name", "full name"
 
+        
     ]
 }
